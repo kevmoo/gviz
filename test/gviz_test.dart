@@ -5,6 +5,13 @@ import 'package:gviz/gviz.dart';
 import 'package:test/test.dart';
 
 void main() {
+  test('adding the same node twice should fail', () {
+    var graph = new Graph()
+      ..addNode('solo');
+
+    expect(() => graph.addNode('solo'), throwsArgumentError);
+  });
+
   test('empty', () {
     var graph = new Graph();
     expect(graph.toString(), 'digraph the_graph {\n}\n');

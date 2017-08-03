@@ -33,6 +33,10 @@ class Graph {
   }
 
   void addNode(String name, {Map<String, String> properties}) {
+    if (_items.any((item) => item is _Node && item.name == name)) {
+      throw new ArgumentError.value(
+          name, 'name', 'Cannot have more than one node with name `$name`.');
+    }
     _items.add(new _Node(name, properties));
   }
 
