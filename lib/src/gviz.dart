@@ -64,12 +64,9 @@ class Gviz {
       }
     }
 
-    String lastEntry;
-
     void _writeGlobalProperties(String name, Map<String, String> properties) {
       assert(_keywords.contains(name));
       if (properties.isNotEmpty) {
-        lastEntry = name;
         sink.write('  $name');
         _writeProps(properties);
         sink.writeln(';');
@@ -82,10 +79,6 @@ class Gviz {
 
     void _writeNode(_Node node) {
       var entry = _escape(node.name);
-      if (entry != lastEntry) {
-        sink.writeln();
-        lastEntry = entry;
-      }
       sink.write('  $entry');
       _writeProps(node.properties);
       sink.writeln(';');
@@ -93,10 +86,6 @@ class Gviz {
 
     void _writeEdge(_Edge edge) {
       var entry = _escape(edge.from);
-      if (entry != lastEntry) {
-        sink.writeln();
-        lastEntry = entry;
-      }
       sink.write('  $entry -> ${_escape(edge.to)}');
       _writeProps(edge.properties);
       sink.writeln(';');

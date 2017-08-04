@@ -24,7 +24,6 @@ void main() {
       ..addEdge('solo', 'solo');
 
     gExpect(graph, '''digraph the_graph {
-
   solo;
   solo -> solo;
 }
@@ -57,26 +56,19 @@ void main() {
     gExpect(graph, r'''digraph lib_graph {
   node [fontname="Source Code Pro"];
   edge [fontname=Helvetica, fontcolor=gray];
-
   "edge" [xlabel=keyword];
   "edge" -> "cool
 beans";
-
   "node" [xlabel=keyword];
   "node" -> "edge";
-
   "42" [xlabel="starts with number"];
   "42" -> "node";
-
   _5fine [xlabel="no special characters"];
   _5fine -> "42";
-
   "\"quotes\"" [xlabel="contains double quotes"];
   "\"quotes\"" -> _5fine;
-
   "'quotes'" [xlabel="contains single quotes"];
   "'quotes'" -> "\"quotes\"";
-
   "cool
 beans" [xlabel="contains a newline"];
   "cool
