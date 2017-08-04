@@ -4,6 +4,8 @@
 import 'package:gviz/src/gviz.dart';
 import 'package:test/test.dart';
 
+import 'test_util.dart';
+
 void main() {
   test('adding the same node twice should fail', () {
     var graph = new Gviz()..addNode('solo');
@@ -13,7 +15,7 @@ void main() {
 
   test('empty', () {
     var graph = new Gviz();
-    expect(graph.toString(), 'digraph the_graph {\n}\n');
+    gExpect(graph, 'digraph the_graph {\n}\n');
   });
 
   test('one node, one edge', () {
@@ -21,7 +23,7 @@ void main() {
       ..addNode('solo')
       ..addEdge('solo', 'solo');
 
-    expect(graph.toString(), '''digraph the_graph {
+    gExpect(graph, '''digraph the_graph {
 
   solo;
   solo -> solo;
@@ -52,7 +54,7 @@ void main() {
       lastNode = node;
     });
 
-    expect(graph.toString(), r'''digraph lib_graph {
+    gExpect(graph, r'''digraph lib_graph {
   node [fontname="Source Code Pro"];
   edge [fontname=Helvetica, fontcolor=gray];
 
