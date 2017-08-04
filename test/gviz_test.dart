@@ -6,19 +6,18 @@ import 'package:test/test.dart';
 
 void main() {
   test('adding the same node twice should fail', () {
-    var graph = new Graph()
-      ..addNode('solo');
+    var graph = new Gviz()..addNode('solo');
 
     expect(() => graph.addNode('solo'), throwsArgumentError);
   });
 
   test('empty', () {
-    var graph = new Graph();
+    var graph = new Gviz();
     expect(graph.toString(), 'digraph the_graph {\n}\n');
   });
 
   test('one node, one edge', () {
-    var graph = new Graph()
+    var graph = new Gviz()
       ..addNode('solo')
       ..addEdge('solo', 'solo');
 
@@ -31,7 +30,7 @@ void main() {
   });
 
   test('handle keywords, numbers, and characters', () {
-    var graph = new Graph(
+    var graph = new Gviz(
         name: 'lib_graph',
         nodeProperties: {'fontname': 'Source Code Pro'},
         edgeProperties: {'fontname': 'Helvetica', 'fontcolor': 'gray'});
