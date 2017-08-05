@@ -1,7 +1,7 @@
 name: gviz
 description: A starting point for Dart libraries or applications.
 version: 0.1.0-dev
-homepage: https://pub.dartlang.org/packages/gviz
+homepage: https://github.com/kevmoo/gviz
 author: Kevin Moore <github@j832.com>
 
 environment:
