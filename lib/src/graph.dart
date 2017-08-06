@@ -8,6 +8,7 @@ import 'package:collection/collection.dart';
 import 'gviz.dart';
 
 class Graph {
+  static int _count = 0;
   final _edges = new Set<Edge>();
 
   Graph();
@@ -36,7 +37,7 @@ class Graph {
   EdgeFlag flagEdge(Object from, Object to) => _flagEdge(from, to, null);
 
   EdgeFlag _flagEdge(Object from, Object to, EdgeFlag flag) {
-    EdgeFlag gf() => flag ??= new EdgeFlag();
+    EdgeFlag gf() => flag ??= new EdgeFlag._(_count++);
 
     var queue = new Queue();
 
@@ -146,10 +147,9 @@ Iterable<String> _validIds(Object node) sync* {
 }
 
 class EdgeFlag {
-  static int _count = 0;
   final int _id;
 
-  EdgeFlag() : this._id = _count++;
+  EdgeFlag._(this._id);
 
   @override
   String toString() => 'EdgeFlag:$_id';
