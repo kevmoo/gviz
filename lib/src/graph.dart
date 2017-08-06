@@ -5,11 +5,13 @@ import 'dart:collection';
 
 import 'package:collection/collection.dart';
 
+import 'edge.dart';
+import 'edge_flag.dart';
 import 'gviz.dart';
 
 class Graph {
   static int _count = 0;
-  final _edges = new Set<Edge>();
+  final _edges = new Set<EdgeImpl>();
 
   Graph();
 
@@ -29,7 +31,7 @@ class Graph {
 
   Set<Edge> get edges => new UnmodifiableSetView<Edge>(_edges);
 
-  bool addEdge(Object from, Object to) => _edges.add(new Edge(from, to));
+  bool addEdge(Object from, Object to) => _edges.add(new EdgeImpl(from, to));
 
   Edge edgeFor(Object from, Object to) => _edges
       .firstWhere((e) => e.from == from && e.to == to, orElse: () => null);
@@ -37,7 +39,7 @@ class Graph {
   EdgeFlag flagEdge(Object from, Object to) => _flagEdge(from, to, null);
 
   EdgeFlag _flagEdge(Object from, Object to, EdgeFlag flag) {
-    EdgeFlag gf() => flag ??= new EdgeFlag._(_count++);
+    EdgeFlag gf() => flag ??= new EdgeFlagImpl(_count++);
 
     var queue = new Queue();
 
@@ -55,14 +57,14 @@ class Graph {
 
       try {
         for (var edge in _edges.where((e) => e.from == from)) {
-          if (flag != null && edge._flags.contains(flag)) {
+          if (flag != null && edge.flags.contains(flag)) {
             // we've already been here! return the flag!
             return flag;
           }
           if (edge.from == from && edge.to == to) {
             // this had better be the first time, right?
             flag = helperFlag = gf();
-            edge._add(helperFlag);
+            edge.addFlag(helperFlag);
           } else {
             // must go deeper
             var deepFlag = flagHelper(edge.to, to);
@@ -75,7 +77,7 @@ class Graph {
               // There is a path from `edge.to` to the target `to`,
               // so there is also a path from `edge.from` to `to`
               // so add it!
-              edge._add(deepFlag);
+              edge.addFlag(deepFlag);
             }
           }
         }
@@ -144,39 +146,4 @@ Iterable<String> _validIds(Object node) sync* {
   while (true) {
     yield '${node}_${(start++).toString().padLeft(2, '0')}';
   }
-}
-
-class EdgeFlag {
-  final int _id;
-
-  EdgeFlag._(this._id);
-
-  @override
-  String toString() => 'EdgeFlag:$_id';
-}
-
-class Edge {
-  final Object from;
-  final Object to;
-
-  final _flags = new Set<EdgeFlag>();
-
-  Set<EdgeFlag> get flags => new UnmodifiableSetView(_flags);
-
-  Edge(this.from, this.to);
-
-  void _add(EdgeFlag flag) {
-    var added = _flags.add(flag);
-    assert(added, 'Should never add more than once.');
-  }
-
-  @override
-  bool operator ==(Object other) =>
-      other is Edge && this.from == other.from && this.to == other.to;
-
-  @override
-  int get hashCode => from.hashCode ^ to.hashCode * 37;
-
-  @override
-  String toString() => 'Edge: `$from` -> `$to`';
 }
