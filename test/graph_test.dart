@@ -1,7 +1,7 @@
 // Copyright (c) 2017, Kevin Moore. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
-import 'package:gviz/src/graph.dart';
+import 'package:gviz/gviz.dart';
 import 'package:test/test.dart';
 
 import 'test_util.dart';
@@ -18,6 +18,39 @@ void main() {
 
     expect(graph.addEdge(1, 2), isTrue);
     expect(graph.addEdge(1, 2), isFalse);
+  });
+
+  group('style', () {
+    test('nodes and edges', () {
+      var g = new Graph.fromEdges([
+        [1, 2],
+        [1, 3],
+        [2, 4],
+        [3, 4],
+        [1, 5],
+        [5, 7],
+        [7, 1]
+      ]);
+
+      g.flagEdge(1, 4);
+
+      gExpect(g.createGviz(graphStyle: new GStyle()), r'''digraph the_graph {
+  "1" [label="1", color=red];
+  "2" [label="2"];
+  "1" -> "2" [color=blue];
+  "3" [label="3", color=red];
+  "1" -> "3" [color=blue];
+  "4" [label="4"];
+  "2" -> "4" [color=blue];
+  "3" -> "4" [color=blue];
+  "5" [label="5", color=red];
+  "1" -> "5";
+  "7" [label="7", color=red];
+  "5" -> "7";
+  "7" -> "1";
+}
+''');
+    });
   });
 
   group('flagEdges', () {
@@ -203,4 +236,27 @@ void main() {
 ''');
     });
   });
+}
+
+class GStyle extends GraphStyle {
+  @override
+  Map<String, String> styleForNode(Object node) {
+    var props = super.styleForNode(node);
+    if (node is int && node % 2 == 1) {
+      props['color'] = 'red';
+    }
+
+    return props;
+  }
+
+  @override
+  Map<String, String> styleForEdge(Edge edge) {
+    var props = <String, String>{};
+
+    if (edge.flags.isNotEmpty) {
+      props['color'] = 'blue';
+    }
+
+    return props;
+  }
 }

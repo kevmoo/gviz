@@ -6,8 +6,11 @@ import 'package:test/test.dart';
 
 void gExpect(Gviz gviz, String expected) {
   var value = gviz.toString();
-  // Here to help debugging
-  //print(value);
-
-  expect(value, expected);
+  try {
+    expect(value, expected);
+  } catch (e) {
+    // Here to help debugging output...
+    print(value);
+    rethrow;
+  }
 }

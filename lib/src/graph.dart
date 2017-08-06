@@ -7,6 +7,7 @@ import 'package:collection/collection.dart';
 
 import 'edge.dart';
 import 'edge_flag.dart';
+import 'graph_style.dart';
 import 'gviz.dart';
 
 class Graph {
@@ -111,7 +112,8 @@ class Graph {
     return flag;
   }
 
-  Gviz createGviz() {
+  Gviz createGviz({GraphStyle graphStyle}) {
+    graphStyle ??= new GraphStyle();
     var gviz = new Gviz();
 
     var nodeIds = <Object, String>{};
@@ -119,7 +121,7 @@ class Graph {
     String addNode(Object node) => nodeIds.putIfAbsent(node, () {
           for (var option in _validIds(node)) {
             if (!nodeIds.values.contains(option)) {
-              gviz.addNode(option, properties: {'label': node.toString()});
+              gviz.addNode(option, properties: graphStyle.styleForNode(node));
               return option;
             }
           }
@@ -132,7 +134,7 @@ class Graph {
       var idA = addNode(edge.from);
       var idB = addNode(edge.to);
 
-      gviz.addEdge(idA, idB);
+      gviz.addEdge(idA, idB, properties: graphStyle.styleForEdge(edge));
     }
 
     return gviz;
