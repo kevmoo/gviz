@@ -10,14 +10,14 @@ import 'edge_flag.dart';
 import 'graph_style.dart';
 import 'gviz.dart';
 
-class Graph {
+class Graph<T> {
   static int _count = 0;
-  final _edges = new Set<EdgeImpl>();
+  final _edges = new Set<EdgeImpl<T>>();
 
   Graph();
 
-  factory Graph.fromEdges(Iterable<List<Object>> edges) {
-    var graph = new Graph();
+  factory Graph.fromEdges(Iterable<List<T>> edges) {
+    var graph = new Graph<T>();
 
     for (var e in edges) {
       if (e.length != 2) {
@@ -32,14 +32,14 @@ class Graph {
 
   Set<Edge> get edges => new UnmodifiableSetView<Edge>(_edges);
 
-  bool addEdge(Object from, Object to) => _edges.add(new EdgeImpl(from, to));
+  bool addEdge(T from, T to) => _edges.add(new EdgeImpl(from, to));
 
-  Edge edgeFor(Object from, Object to) => _edges
+  Edge<T> edgeFor(T from, T to) => _edges
       .firstWhere((e) => e.from == from && e.to == to, orElse: () => null);
 
-  EdgeFlag flagEdge(Object from, Object to) => _flagEdge(from, to, null);
+  EdgeFlag flagEdge(T from, T to) => _flagEdge(from, to, null);
 
-  EdgeFlag _flagEdge(Object from, Object to, EdgeFlag flag) {
+  EdgeFlag _flagEdge(T from, T to, EdgeFlag flag) {
     EdgeFlag gf() => flag ??= new EdgeFlagImpl(_count++);
 
     var queue = new Queue();
@@ -94,7 +94,7 @@ class Graph {
   }
 
   @Deprecated('not ready yet')
-  EdgeFlag flagEdges(Iterable from, Iterable to) {
+  EdgeFlag flagEdges(Iterable<T> from, Iterable<T> to) {
     EdgeFlag flag;
 
     for (var fromItem in from) {

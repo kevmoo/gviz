@@ -5,18 +5,18 @@ import 'package:collection/collection.dart';
 
 import 'edge_flag.dart';
 
-abstract class Edge {
-  Object get from;
-  Object get to;
+abstract class Edge<T> {
+  T get from;
+  T get to;
   Set<EdgeFlag> get flags;
 }
 
-class EdgeImpl implements Edge {
+class EdgeImpl<T> implements Edge<T> {
   @override
-  final Object from;
+  final T from;
 
   @override
-  final Object to;
+  final T to;
 
   final _flags = new Set<EdgeFlag>();
 
