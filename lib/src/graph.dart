@@ -37,9 +37,9 @@ class Graph<T> {
   Edge<T> edgeFor(T from, T to) => _edges
       .firstWhere((e) => e.from == from && e.to == to, orElse: () => null);
 
-  EdgeFlag flagEdge(T from, T to) => _flagEdge(from, to, null);
+  EdgeFlag flagPath(T from, T to) => _flagPath(from, to, null);
 
-  EdgeFlag _flagEdge(T from, T to, EdgeFlag flag) {
+  EdgeFlag _flagPath(T from, T to, EdgeFlag flag) {
     EdgeFlag gf() => flag ??= new EdgeFlagImpl(_count++);
 
     var queue = new Queue();
@@ -93,20 +93,26 @@ class Graph<T> {
     return flagHelper(from, to);
   }
 
-  @Deprecated('not ready yet')
+  /// If [from] is `null`, then all edges entering [to] are flagged.
+  /// Likewise, if [to] is `null`, all edges leaving [from] are flagged.
   EdgeFlag flagEdges(Iterable<T> from, Iterable<T> to) {
-    EdgeFlag flag;
+    if (to == null && from == null) {
+      throw new ArgumentError('`to` and `from` cannot both be `null`.');
+    }
 
-    for (var fromItem in from) {
-      for (var toItem in to) {
-        var flagValue = _flagEdge(fromItem, toItem, flag);
-        if (flagValue != null) {
-          if (flag == null) {
-            flag = flagValue;
-          }
-          assert(flag == flagValue);
-        }
+    EdgeFlag flag;
+    EdgeFlag gf() => flag ??= new EdgeFlagImpl(_count++);
+
+    for (var edge in _edges) {
+      if (from != null && !from.contains(edge.from)) {
+        continue;
       }
+
+      if (to != null && !to.contains(edge.to)) {
+        continue;
+      }
+
+      edge.addFlag(gf());
     }
 
     return flag;

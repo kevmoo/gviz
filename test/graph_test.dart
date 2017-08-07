@@ -20,6 +20,34 @@ void main() {
     expect(graph.addEdge(1, 2), isFalse);
   });
 
+  test('flagEdges', () {
+    var g = new Graph.fromEdges([
+      [1, 2],
+      [1, 3],
+      [2, 4],
+      [3, 4],
+      [1, 5],
+      [5, 7],
+      [7, 1]
+    ]);
+
+    expect(() => g.flagEdges(null, null), throwsArgumentError);
+
+    var from1 = g.flagEdges([1], null);
+    var to7 = g.flagEdges(null, [7]);
+    var from2or3to4 = g.flagEdges([2, 3], [4]);
+
+    expect(g.flagEdges([1], [7]), isNull);
+
+    expect(g.edgeFor(1, 2).flags.single, from1);
+    expect(g.edgeFor(1, 3).flags.single, from1);
+    expect(g.edgeFor(2, 4).flags.single, from2or3to4);
+    expect(g.edgeFor(3, 4).flags.single, from2or3to4);
+    expect(g.edgeFor(1, 5).flags.single, from1);
+    expect(g.edgeFor(5, 7).flags.single, to7);
+    expect(g.edgeFor(7, 1).flags, isEmpty);
+  });
+
   group('style', () {
     test('nodes and edges', () {
       var g = new Graph.fromEdges([
@@ -32,7 +60,7 @@ void main() {
         [7, 1]
       ]);
 
-      g.flagEdge(1, 4);
+      g.flagPath(1, 4);
 
       gExpect(g.createGviz(graphStyle: new GStyle()), r'''digraph the_graph {
   "1" [label="1", color=red];
@@ -57,7 +85,7 @@ void main() {
     test('simple', () {
       var graph = new Graph()..addEdge(1, 2);
 
-      var flag = graph.flagEdge(1, 2);
+      var flag = graph.flagPath(1, 2);
 
       expect(flag, isNotNull);
 
@@ -68,7 +96,7 @@ void main() {
     test('empty', () {
       var graph = new Graph();
 
-      var flag = graph.flagEdge(1, 2);
+      var flag = graph.flagPath(1, 2);
 
       expect(flag, isNull);
 
@@ -78,7 +106,7 @@ void main() {
     test('no match', () {
       var graph = new Graph()..addEdge(1, 2);
 
-      var flag = graph.flagEdge(1, 3);
+      var flag = graph.flagPath(1, 3);
 
       expect(flag, isNull);
 
@@ -93,7 +121,7 @@ void main() {
       ]);
       expect(graph.edges, hasLength(2));
 
-      var flag = graph.flagEdge(1, 3);
+      var flag = graph.flagPath(1, 3);
 
       expect(flag, isNotNull);
       expect(graph.edgeFor(1, 2).flags.single, flag);
@@ -108,7 +136,7 @@ void main() {
       ]);
       expect(graph.edges, hasLength(3));
 
-      var flag = graph.flagEdge(1, 3);
+      var flag = graph.flagPath(1, 3);
 
       expect(flag, isNotNull);
       expect(graph.edgeFor(1, 2).flags.single, flag);
@@ -128,7 +156,7 @@ void main() {
       ]);
       expect(graph.edges, hasLength(7));
 
-      var flag = graph.flagEdge(1, 4);
+      var flag = graph.flagPath(1, 4);
 
       expect(flag, isNotNull);
 
@@ -153,7 +181,7 @@ void main() {
       ]);
       expect(graph.edges, hasLength(7));
 
-      var flag = graph.flagEdge(1, 5);
+      var flag = graph.flagPath(1, 5);
 
       expect(flag, isNotNull);
 
@@ -179,7 +207,7 @@ void main() {
       ]);
       expect(graph.edges, hasLength(8));
 
-      var flag = graph.flagEdge(1, 5);
+      var flag = graph.flagPath(1, 5);
 
       expect(flag, isNotNull);
 
