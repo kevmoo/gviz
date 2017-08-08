@@ -11,7 +11,7 @@ import 'graph_style.dart';
 import 'gviz.dart';
 
 class Graph<T> {
-  static int _count = 0;
+  int _count = 0;
   final _edges = new Set<EdgeImpl<T>>();
 
   Graph();
@@ -36,6 +36,18 @@ class Graph<T> {
 
   Edge<T> edgeFor(T from, T to) => _edges
       .firstWhere((e) => e.from == from && e.to == to, orElse: () => null);
+
+  Map<EdgeFlag, Set<T>> flagConnectedComponents() {
+    var connectedComps = stronglyConnectedComponents(_mapView());
+
+    var map = <EdgeFlag, Set<T>>{};
+
+    for (var component in connectedComps) {
+      map[flagEdges(component, component)] = component;
+    }
+
+    return map;
+  }
 
   EdgeFlag flagPath(T from, T to) => _flagPath(from, to, null);
 
@@ -144,6 +156,16 @@ class Graph<T> {
     }
 
     return gviz;
+  }
+
+  Map<T, Set<T>> _mapView() {
+    var map = <T, Set<T>>{};
+
+    for (var edge in _edges) {
+      map.putIfAbsent(edge.from, () => new Set<T>()).add(edge.to);
+    }
+
+    return map;
   }
 }
 

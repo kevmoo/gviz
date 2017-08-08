@@ -6,15 +6,22 @@ import 'package:gviz/gviz.dart';
 void main() {
   var g = new Graph.fromEdges([
     [1, 2],
-    [1, 3],
-    [2, 4],
+    [2, 5],
+    [5, 1],
+    [2, 6],
+    [5, 6],
+    [2, 3],
+    [6, 7],
+    [7, 6],
+    [3, 7],
     [3, 4],
-    [1, 5],
-    [5, 7],
-    [7, 1]
+    [4, 3],
+    [4, 8],
+    [8, 4],
+    [8, 7]
   ]);
 
-  g.flagEdge(1, 4);
+  g.flagConnectedComponents();
 
   print(g.createGviz(graphStyle: new GStyle()));
 }

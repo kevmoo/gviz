@@ -48,6 +48,40 @@ void main() {
     expect(g.edgeFor(7, 1).flags, isEmpty);
   });
 
+  test('connected components', () {
+    var g = new Graph.fromEdges([
+      [1, 2],
+      [2, 5],
+      [5, 1],
+      [2, 6],
+      [5, 6],
+      [2, 3],
+      [6, 7],
+      [7, 6],
+      [3, 7],
+      [3, 4],
+      [4, 3],
+      [4, 8],
+      [8, 4],
+      [8, 7]
+    ]);
+
+    var comps = g.flagConnectedComponents();
+
+    expect(comps, hasLength(3));
+
+    var s125 = comps.values
+        .singleWhere((s) => s.difference(new Set.from([1, 2, 5])).isEmpty);
+    var s348 = comps.values
+        .singleWhere((s) => s.difference(new Set.from([3, 4, 8])).isEmpty);
+    var s67 = comps.values
+        .singleWhere((s) => s.difference(new Set.from([6, 7])).isEmpty);
+
+    expect(s125, isNot(s348));
+    expect(s348, isNot(s67));
+    expect(s67, isNot(s125));
+  });
+
   group('style', () {
     test('nodes and edges', () {
       var g = new Graph.fromEdges([
