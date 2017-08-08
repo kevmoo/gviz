@@ -30,6 +30,20 @@ void main() {
 ''');
   });
 
+  test('blanks', () {
+    var graph = new Gviz()
+      ..addNode('solo')
+      ..addLine()
+      ..addEdge('solo', 'solo');
+
+    gExpect(graph, '''digraph the_graph {
+  solo;
+
+  solo -> solo;
+}
+''');
+  });
+
   test('handle keywords, numbers, and characters', () {
     var graph = new Gviz(
         name: 'lib_graph',

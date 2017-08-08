@@ -44,6 +44,10 @@ class Gviz {
     _items.add(new _Edge(from, to, properties));
   }
 
+  void addLine() {
+    _items.add(const _Blank());
+  }
+
   void write(StringSink sink) {
     String _escape(String input) {
       if (_validName.hasMatch(input) &&
@@ -96,6 +100,8 @@ class Gviz {
         _writeEdge(item);
       } else if (item is _Node) {
         _writeNode(item);
+      } else if (item is _Blank) {
+        sink.writeln();
       } else {
         throw new StateError('Unsupported - ${item.runtimeType} - $item');
       }
@@ -111,21 +117,25 @@ class Gviz {
   }
 }
 
-abstract class _Item {
+abstract class _Item {}
+
+class _Node implements _Item {
+  final String name;
   final Map<String, String> properties;
 
-  _Item(Map<String, String> values) : this.properties = values ?? const {};
+  _Node(this.name, Map<String, String> properties)
+      : this.properties = properties ?? const {};
 }
 
-class _Node extends _Item {
-  final String name;
-
-  _Node(this.name, Map<String, String> properties) : super(properties);
-}
-
-class _Edge extends _Item {
+class _Edge implements _Item {
   final String from;
   final String to;
+  final Map<String, String> properties;
 
-  _Edge(this.from, this.to, Map<String, String> properties) : super(properties);
+  _Edge(this.from, this.to, Map<String, String> properties)
+      : this.properties = properties ?? const {};
+}
+
+class _Blank implements _Item {
+  const _Blank();
 }
