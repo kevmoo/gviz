@@ -3,12 +3,12 @@
 
 import 'package:collection/collection.dart';
 
-import 'edge_flag.dart';
+import 'flag.dart';
 
 abstract class Edge<T> {
   T get from;
   T get to;
-  Set<EdgeFlag> get flags;
+  Set<Flag> get flags;
 }
 
 class EdgeImpl<T> implements Edge<T> {
@@ -18,14 +18,14 @@ class EdgeImpl<T> implements Edge<T> {
   @override
   final T to;
 
-  final _flags = new Set<EdgeFlag>();
+  final _flags = new Set<Flag>();
 
   @override
-  Set<EdgeFlag> get flags => new UnmodifiableSetView(_flags);
+  Set<Flag> get flags => new UnmodifiableSetView(_flags);
 
   EdgeImpl(this.from, this.to);
 
-  void addFlag(EdgeFlag flag) {
+  void addFlag(Flag flag) {
     var added = _flags.add(flag);
     assert(added, 'Should never add more than once.');
   }

@@ -6,7 +6,7 @@ import 'dart:collection';
 import 'package:collection/collection.dart';
 
 import 'edge.dart';
-import 'edge_flag.dart';
+import 'flag.dart';
 import 'graph_style.dart';
 import 'gviz.dart';
 
@@ -37,10 +37,10 @@ class Graph<T> {
   Edge<T> edgeFor(T from, T to) => _edges
       .firstWhere((e) => e.from == from && e.to == to, orElse: () => null);
 
-  Map<EdgeFlag, Set<T>> flagConnectedComponents() {
+  Map<Flag, Set<T>> flagConnectedComponents() {
     var connectedComps = stronglyConnectedComponents(_mapView());
 
-    var map = <EdgeFlag, Set<T>>{};
+    var map = <Flag, Set<T>>{};
 
     for (var component in connectedComps) {
       map[flagEdges(component, component)] = component;
@@ -49,18 +49,18 @@ class Graph<T> {
     return map;
   }
 
-  EdgeFlag flagPath(T from, T to) => _flagPath(from, to, null);
+  Flag flagPath(T from, T to) => _flagPath(from, to, null);
 
-  EdgeFlag _flagPath(T from, T to, EdgeFlag flag) {
-    EdgeFlag gf() => flag ??= new EdgeFlagImpl(_count++);
+  Flag _flagPath(T from, T to, Flag flag) {
+    Flag gf() => flag ??= new FlagImpl(_count++);
 
     var queue = new Queue();
 
-    EdgeFlag flagHelper(Object from, Object to) {
+    Flag flagHelper(Object from, Object to) {
       assert(from != to, 'Not doing loops for now...');
       assert(!queue.contains(to));
 
-      EdgeFlag helperFlag;
+      Flag helperFlag;
 
       if (queue.contains(from)) {
         // loop!
@@ -107,13 +107,13 @@ class Graph<T> {
 
   /// If [from] is `null`, then all edges entering [to] are flagged.
   /// Likewise, if [to] is `null`, all edges leaving [from] are flagged.
-  EdgeFlag flagEdges(Iterable<T> from, Iterable<T> to) {
+  Flag flagEdges(Iterable<T> from, Iterable<T> to) {
     if (to == null && from == null) {
       throw new ArgumentError('`to` and `from` cannot both be `null`.');
     }
 
-    EdgeFlag flag;
-    EdgeFlag gf() => flag ??= new EdgeFlagImpl(_count++);
+    Flag flag;
+    Flag gf() => flag ??= new FlagImpl(_count++);
 
     for (var edge in _edges) {
       if (from != null && !from.contains(edge.from)) {
