@@ -163,6 +163,7 @@ class Graph<T> {
 
     for (var edge in _edges) {
       map.putIfAbsent(edge.from, () => new Set<T>()).add(edge.to);
+      map.putIfAbsent(edge.to, () => new Set<T>());
     }
 
     return map;

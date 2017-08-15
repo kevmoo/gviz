@@ -63,12 +63,13 @@ void main() {
       [4, 3],
       [4, 8],
       [8, 4],
-      [8, 7]
+      [8, 7],
+      [8, 9]
     ]);
 
     var comps = g.flagConnectedComponents();
 
-    expect(comps, hasLength(3));
+    expect(comps, hasLength(4));
 
     var s125 = comps.values
         .singleWhere((s) => s.difference(new Set.from([1, 2, 5])).isEmpty);
@@ -76,6 +77,8 @@ void main() {
         .singleWhere((s) => s.difference(new Set.from([3, 4, 8])).isEmpty);
     var s67 = comps.values
         .singleWhere((s) => s.difference(new Set.from([6, 7])).isEmpty);
+
+    expect(comps[null], new Set.from([9]));
 
     expect(s125, isNot(s348));
     expect(s348, isNot(s67));
