@@ -1,3 +1,7 @@
+## 0.1.1-dev
+
+* Expose `name` on `Gviz`.
+
 ## 0.1.0
 
 * Rename `Graph` to `Gviz`.
