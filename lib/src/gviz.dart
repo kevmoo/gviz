@@ -13,7 +13,7 @@ class Gviz {
 
   static final _validName = new RegExp(r'^[a-zA-Z_][a-zA-Z_\d]*$');
 
-  final String _name;
+  final String name;
   final Map<String, String> _nodeProperties;
   final Map<String, String> _edgeProperties;
 
@@ -23,10 +23,10 @@ class Gviz {
       {String name,
       Map<String, String> nodeProperties,
       Map<String, String> edgeProperties})
-      : this._name = name ?? 'the_graph',
+      : this.name = name ?? 'the_graph',
         this._edgeProperties = edgeProperties ?? const {},
         this._nodeProperties = nodeProperties ?? const {} {
-    if (!_validName.hasMatch(this._name)) {
+    if (!_validName.hasMatch(this.name)) {
       throw new ArgumentError.value(
           name, 'name', '`name` must be a simple name.');
     }
@@ -77,7 +77,7 @@ class Gviz {
       }
     }
 
-    sink.writeln('digraph $_name {');
+    sink.writeln('digraph $name {');
     _writeGlobalProperties('node', _nodeProperties);
     _writeGlobalProperties('edge', _edgeProperties);
 
