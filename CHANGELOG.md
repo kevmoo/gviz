@@ -1,3 +1,8 @@
+## 0.2.0
+
+* Added `graphProperties` to the `Gviz` constructor.
+* **BREAKING** Rename `EdgeFlag` to `Flag`.
+
 ## 0.1.0
 
 * Rename `Graph` to `Gviz`.

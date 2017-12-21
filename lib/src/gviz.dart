@@ -16,16 +16,19 @@ class Gviz {
   final String _name;
   final Map<String, String> _nodeProperties;
   final Map<String, String> _edgeProperties;
+  final Map<String, String> _graphProperties;
 
   final _items = <_Item>[];
 
   Gviz(
       {String name,
       Map<String, String> nodeProperties,
-      Map<String, String> edgeProperties})
+      Map<String, String> edgeProperties,
+      Map<String, String> graphProperties})
       : this._name = name ?? 'the_graph',
         this._edgeProperties = edgeProperties ?? const {},
-        this._nodeProperties = nodeProperties ?? const {} {
+        this._nodeProperties = nodeProperties ?? const {},
+        this._graphProperties = graphProperties ?? const {} {
     if (!_validName.hasMatch(this._name)) {
       throw new ArgumentError.value(
           name, 'name', '`name` must be a simple name.');
@@ -78,6 +81,7 @@ class Gviz {
     }
 
     sink.writeln('digraph $_name {');
+    _writeGlobalProperties('graph', _graphProperties);
     _writeGlobalProperties('node', _nodeProperties);
     _writeGlobalProperties('edge', _edgeProperties);
 
