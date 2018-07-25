@@ -1,3 +1,7 @@
+## 0.2.0+1
+
+* Support Dart 2 stable.
+
 ## 0.2.0
 
 * Added `graphProperties` to the `Gviz` constructor.
