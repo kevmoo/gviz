@@ -12,16 +12,16 @@ import 'gviz.dart';
 
 class Graph<T> {
   int _count = 0;
-  final _edges = new Set<EdgeImpl<T>>();
+  final _edges = Set<EdgeImpl<T>>();
 
   Graph();
 
   factory Graph.fromEdges(Iterable<List<T>> edges) {
-    var graph = new Graph<T>();
+    final graph = Graph<T>();
 
     for (var e in edges) {
       if (e.length != 2) {
-        throw new ArgumentError('All values in `edges` must have length `2`.');
+        throw ArgumentError('All values in `edges` must have length `2`.');
       }
 
       graph.addEdge(e[0], e[1]);
@@ -30,17 +30,17 @@ class Graph<T> {
     return graph;
   }
 
-  Set<Edge> get edges => new UnmodifiableSetView<Edge>(_edges);
+  Set<Edge> get edges => UnmodifiableSetView<Edge>(_edges);
 
-  bool addEdge(T from, T to) => _edges.add(new EdgeImpl(from, to));
+  bool addEdge(T from, T to) => _edges.add(EdgeImpl(from, to));
 
   Edge<T> edgeFor(T from, T to) => _edges
       .firstWhere((e) => e.from == from && e.to == to, orElse: () => null);
 
   Map<Flag, Set<T>> flagConnectedComponents() {
-    var connectedComps = stronglyConnectedComponents(_mapView());
+    final connectedComps = stronglyConnectedComponents(_mapView());
 
-    var map = <Flag, Set<T>>{};
+    final map = <Flag, Set<T>>{};
 
     for (var component in connectedComps) {
       map[flagEdges(component, component)] = component;
@@ -52,9 +52,9 @@ class Graph<T> {
   Flag flagPath(T from, T to) => _flagPath(from, to, null);
 
   Flag _flagPath(T from, T to, Flag flag) {
-    Flag gf() => flag ??= new FlagImpl(_count++);
+    Flag gf() => flag ??= FlagImpl(_count++);
 
-    var queue = new Queue();
+    final queue = Queue();
 
     Flag flagHelper(Object from, Object to) {
       assert(from != to, 'Not doing loops for now...');
@@ -80,11 +80,9 @@ class Graph<T> {
             edge.addFlag(helperFlag);
           } else {
             // must go deeper
-            var deepFlag = flagHelper(edge.to, to);
+            final deepFlag = flagHelper(edge.to, to);
             if (deepFlag != null) {
-              if (helperFlag == null) {
-                helperFlag = deepFlag;
-              }
+              helperFlag ??= deepFlag;
               assert(helperFlag == deepFlag);
               assert(deepFlag == flag);
               // There is a path from `edge.to` to the target `to`,
@@ -109,11 +107,11 @@ class Graph<T> {
   /// Likewise, if [to] is `null`, all edges leaving [from] are flagged.
   Flag flagEdges(Iterable<T> from, Iterable<T> to) {
     if (to == null && from == null) {
-      throw new ArgumentError('`to` and `from` cannot both be `null`.');
+      throw ArgumentError('`to` and `from` cannot both be `null`.');
     }
 
     Flag flag;
-    Flag gf() => flag ??= new FlagImpl(_count++);
+    Flag gf() => flag ??= FlagImpl(_count++);
 
     for (var edge in _edges) {
       if (from != null && !from.contains(edge.from)) {
@@ -131,10 +129,10 @@ class Graph<T> {
   }
 
   Gviz createGviz({GraphStyle graphStyle}) {
-    graphStyle ??= new GraphStyle();
-    var gviz = new Gviz();
+    graphStyle ??= GraphStyle();
+    final gviz = Gviz();
 
-    var nodeIds = <Object, String>{};
+    final nodeIds = <Object, String>{};
 
     String addNode(Object node) => nodeIds.putIfAbsent(node, () {
           for (var option in _validIds(node)) {
@@ -144,13 +142,13 @@ class Graph<T> {
             }
           }
 
-          throw new UnsupportedError(
+          throw UnsupportedError(
               'Need to figure out another ID for `$node`, I guess...');
         });
 
     for (var edge in _edges) {
-      var idA = addNode(edge.from);
-      var idB = addNode(edge.to);
+      final idA = addNode(edge.from);
+      final idB = addNode(edge.to);
 
       gviz.addEdge(idA, idB, properties: graphStyle.styleForEdge(edge));
     }
@@ -159,11 +157,11 @@ class Graph<T> {
   }
 
   Map<T, Set<T>> _mapView() {
-    var map = <T, Set<T>>{};
+    final map = <T, Set<T>>{};
 
     for (var edge in _edges) {
-      map.putIfAbsent(edge.from, () => new Set<T>()).add(edge.to);
-      map.putIfAbsent(edge.to, () => new Set<T>());
+      map.putIfAbsent(edge.from, () => Set<T>()).add(edge.to);
+      map.putIfAbsent(edge.to, () => Set<T>());
     }
 
     return map;
@@ -174,7 +172,7 @@ Iterable<String> _validIds(Object node) sync* {
   yield node.toString();
 
   var start = 1;
-  while (true) {
+  for (;;) {
     yield '${node}_${(start++).toString().padLeft(2, '0')}';
   }
 }

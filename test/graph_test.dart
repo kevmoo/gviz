@@ -14,14 +14,14 @@ void printGraph(Graph g) {
 
 void main() {
   test('duplicate edge returns false', () {
-    var graph = new Graph();
+    final graph = Graph();
 
     expect(graph.addEdge(1, 2), isTrue);
     expect(graph.addEdge(1, 2), isFalse);
   });
 
   test('flagEdges', () {
-    var g = new Graph.fromEdges([
+    final g = Graph.fromEdges([
       [1, 2],
       [1, 3],
       [2, 4],
@@ -33,9 +33,9 @@ void main() {
 
     expect(() => g.flagEdges(null, null), throwsArgumentError);
 
-    var from1 = g.flagEdges([1], null);
-    var to7 = g.flagEdges(null, [7]);
-    var from2or3to4 = g.flagEdges([2, 3], [4]);
+    final from1 = g.flagEdges([1], null);
+    final to7 = g.flagEdges(null, [7]);
+    final from2or3to4 = g.flagEdges([2, 3], [4]);
 
     expect(g.flagEdges([1], [7]), isNull);
 
@@ -49,7 +49,7 @@ void main() {
   });
 
   test('connected components', () {
-    var g = new Graph.fromEdges([
+    final g = Graph.fromEdges([
       [1, 2],
       [2, 5],
       [5, 1],
@@ -67,18 +67,18 @@ void main() {
       [8, 9]
     ]);
 
-    var comps = g.flagConnectedComponents();
+    final comps = g.flagConnectedComponents();
 
     expect(comps, hasLength(4));
 
-    var s125 = comps.values
-        .singleWhere((s) => s.difference(new Set.from([1, 2, 5])).isEmpty);
-    var s348 = comps.values
-        .singleWhere((s) => s.difference(new Set.from([3, 4, 8])).isEmpty);
-    var s67 = comps.values
-        .singleWhere((s) => s.difference(new Set.from([6, 7])).isEmpty);
+    final s125 = comps.values
+        .singleWhere((s) => s.difference(Set.from([1, 2, 5])).isEmpty);
+    final s348 = comps.values
+        .singleWhere((s) => s.difference(Set.from([3, 4, 8])).isEmpty);
+    final s67 =
+        comps.values.singleWhere((s) => s.difference(Set.from([6, 7])).isEmpty);
 
-    expect(comps[null], new Set.from([9]));
+    expect(comps[null], Set.from([9]));
 
     expect(s125, isNot(s348));
     expect(s348, isNot(s67));
@@ -87,7 +87,7 @@ void main() {
 
   group('style', () {
     test('nodes and edges', () {
-      var g = new Graph.fromEdges([
+      final g = Graph.fromEdges([
         [1, 2],
         [1, 3],
         [2, 4],
@@ -99,7 +99,7 @@ void main() {
 
       g.flagPath(1, 4);
 
-      gExpect(g.createGviz(graphStyle: new GStyle()), r'''digraph the_graph {
+      gExpect(g.createGviz(graphStyle: GStyle()), r'''digraph the_graph {
   "1" [label="1", color=red];
   "2" [label="2"];
   "1" -> "2" [color=blue];
@@ -120,9 +120,9 @@ void main() {
 
   group('flagEdges', () {
     test('simple', () {
-      var graph = new Graph()..addEdge(1, 2);
+      final graph = Graph()..addEdge(1, 2);
 
-      var flag = graph.flagPath(1, 2);
+      final flag = graph.flagPath(1, 2);
 
       expect(flag, isNotNull);
 
@@ -131,9 +131,9 @@ void main() {
     });
 
     test('empty', () {
-      var graph = new Graph();
+      final graph = Graph();
 
-      var flag = graph.flagPath(1, 2);
+      final flag = graph.flagPath(1, 2);
 
       expect(flag, isNull);
 
@@ -141,9 +141,9 @@ void main() {
     });
 
     test('no match', () {
-      var graph = new Graph()..addEdge(1, 2);
+      final graph = Graph()..addEdge(1, 2);
 
-      var flag = graph.flagPath(1, 3);
+      final flag = graph.flagPath(1, 3);
 
       expect(flag, isNull);
 
@@ -152,13 +152,13 @@ void main() {
     });
 
     test('1-2-3', () {
-      var graph = new Graph.fromEdges([
+      final graph = Graph.fromEdges([
         [1, 2],
         [2, 3]
       ]);
       expect(graph.edges, hasLength(2));
 
-      var flag = graph.flagPath(1, 3);
+      final flag = graph.flagPath(1, 3);
 
       expect(flag, isNotNull);
       expect(graph.edgeFor(1, 2).flags.single, flag);
@@ -166,14 +166,14 @@ void main() {
     });
 
     test('1-2-3-1', () {
-      var graph = new Graph.fromEdges([
+      final graph = Graph.fromEdges([
         [1, 2],
         [2, 3],
         [3, 1]
       ]);
       expect(graph.edges, hasLength(3));
 
-      var flag = graph.flagPath(1, 3);
+      final flag = graph.flagPath(1, 3);
 
       expect(flag, isNotNull);
       expect(graph.edgeFor(1, 2).flags.single, flag);
@@ -182,7 +182,7 @@ void main() {
     });
 
     test('diamond', () {
-      var graph = new Graph.fromEdges([
+      final graph = Graph.fromEdges([
         [1, 2],
         [2, 4],
         [1, 3],
@@ -193,7 +193,7 @@ void main() {
       ]);
       expect(graph.edges, hasLength(7));
 
-      var flag = graph.flagPath(1, 4);
+      final flag = graph.flagPath(1, 4);
 
       expect(flag, isNotNull);
 
@@ -207,7 +207,7 @@ void main() {
     });
 
     test('diamond one deeper', () {
-      var graph = new Graph.fromEdges([
+      final graph = Graph.fromEdges([
         [1, 2],
         [2, 4],
         [1, 3],
@@ -218,7 +218,7 @@ void main() {
       ]);
       expect(graph.edges, hasLength(7));
 
-      var flag = graph.flagPath(1, 5);
+      final flag = graph.flagPath(1, 5);
 
       expect(flag, isNotNull);
 
@@ -232,7 +232,7 @@ void main() {
     });
 
     test('diamond one deeper, plus loop', () {
-      var graph = new Graph.fromEdges([
+      final graph = Graph.fromEdges([
         [1, 2],
         [2, 4],
         [1, 3],
@@ -244,7 +244,7 @@ void main() {
       ]);
       expect(graph.edges, hasLength(8));
 
-      var flag = graph.flagPath(1, 5);
+      final flag = graph.flagPath(1, 5);
 
       expect(flag, isNotNull);
 
@@ -261,9 +261,9 @@ void main() {
 
   group('createGviz', () {
     test('simple', () {
-      var graph = new Graph()..addEdge(1, 2)..addEdge(1, 3)..addEdge(2, 3);
+      final graph = Graph()..addEdge(1, 2)..addEdge(1, 3)..addEdge(2, 3);
 
-      var gviz = graph.createGviz();
+      final gviz = graph.createGviz();
 
       gExpect(gviz, r'''digraph the_graph {
   "1" [label="1"];
@@ -277,14 +277,14 @@ void main() {
     });
 
     test('name collisions', () {
-      var graph = new Graph()
+      final graph = Graph()
         ..addEdge(1, 2)
         ..addEdge(1, 3)
         ..addEdge(2, 3)
         ..addEdge('1', 1)
         ..addEdge('2', '1');
 
-      var gviz = graph.createGviz();
+      final gviz = graph.createGviz();
 
       gExpect(gviz, r'''digraph the_graph {
   "1" [label="1"];
@@ -306,7 +306,7 @@ void main() {
 class GStyle extends GraphStyle {
   @override
   Map<String, String> styleForNode(Object node) {
-    var props = super.styleForNode(node);
+    final props = super.styleForNode(node);
     if (node is int && node % 2 == 1) {
       props['color'] = 'red';
     }
@@ -316,7 +316,7 @@ class GStyle extends GraphStyle {
 
   @override
   Map<String, String> styleForEdge(Edge edge) {
-    var props = <String, String>{};
+    final props = <String, String>{};
 
     if (edge.flags.isNotEmpty) {
       props['color'] = 'blue';

@@ -1,11 +1,11 @@
 name: gviz
 description: Utilities for creating GraphViz graphs.
-version: 0.2.0+1
+version: 0.2.1-dev
 homepage: https://github.com/kevmoo/gviz
 author: Kevin Moore <github@j832.com>
 
 environment:
-  sdk: '>=2.0.0-dev <3.0.0'
+  sdk: '>=2.0.0 <3.0.0'
 
 dependencies:
   collection: ^1.14.3

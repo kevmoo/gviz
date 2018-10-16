@@ -2,7 +2,7 @@
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
 class Gviz {
-  static const _keywords = const [
+  static const _keywords = [
     'node',
     'edge',
     'graph',
@@ -11,7 +11,7 @@ class Gviz {
     'strict'
   ];
 
-  static final _validName = new RegExp(r'^[a-zA-Z_][a-zA-Z_\d]*$');
+  static final _validName = RegExp(r'^[a-zA-Z_][a-zA-Z_\d]*$');
 
   final String _name;
   final Map<String, String> _nodeProperties;
@@ -25,26 +25,25 @@ class Gviz {
       Map<String, String> nodeProperties,
       Map<String, String> edgeProperties,
       Map<String, String> graphProperties})
-      : this._name = name ?? 'the_graph',
-        this._edgeProperties = edgeProperties ?? const {},
-        this._nodeProperties = nodeProperties ?? const {},
-        this._graphProperties = graphProperties ?? const {} {
-    if (!_validName.hasMatch(this._name)) {
-      throw new ArgumentError.value(
-          name, 'name', '`name` must be a simple name.');
+      : _name = name ?? 'the_graph',
+        _edgeProperties = edgeProperties ?? const {},
+        _nodeProperties = nodeProperties ?? const {},
+        _graphProperties = graphProperties ?? const {} {
+    if (!_validName.hasMatch(_name)) {
+      throw ArgumentError.value(name, 'name', '`name` must be a simple name.');
     }
   }
 
   void addNode(String name, {Map<String, String> properties}) {
     if (_items.any((item) => item is _Node && item.name == name)) {
-      throw new ArgumentError.value(
+      throw ArgumentError.value(
           name, 'name', 'Cannot have more than one node with name `$name`.');
     }
-    _items.add(new _Node(name, properties));
+    _items.add(_Node(name, properties));
   }
 
   void addEdge(String from, String to, {Map<String, String> properties}) {
-    _items.add(new _Edge(from, to, properties));
+    _items.add(_Edge(from, to, properties));
   }
 
   void addLine() {
@@ -63,7 +62,7 @@ class Gviz {
 
     void _writeProps(Map<String, String> properties) {
       if (properties.isNotEmpty) {
-        var props = properties.keys
+        final props = properties.keys
             .map((key) => '$key=${_escape(properties[key])}')
             .toList(growable: false)
             .join(', ');
@@ -86,14 +85,14 @@ class Gviz {
     _writeGlobalProperties('edge', _edgeProperties);
 
     void _writeNode(_Node node) {
-      var entry = _escape(node.name);
+      final entry = _escape(node.name);
       sink.write('  $entry');
       _writeProps(node.properties);
       sink.writeln(';');
     }
 
     void _writeEdge(_Edge edge) {
-      var entry = _escape(edge.from);
+      final entry = _escape(edge.from);
       sink.write('  $entry -> ${_escape(edge.to)}');
       _writeProps(edge.properties);
       sink.writeln(';');
@@ -107,7 +106,7 @@ class Gviz {
       } else if (item is _Blank) {
         sink.writeln();
       } else {
-        throw new StateError('Unsupported - ${item.runtimeType} - $item');
+        throw StateError('Unsupported - ${item.runtimeType} - $item');
       }
     }
     sink.writeln('}');
@@ -115,7 +114,7 @@ class Gviz {
 
   @override
   String toString() {
-    var buffer = new StringBuffer();
+    final buffer = StringBuffer();
     write(buffer);
     return buffer.toString();
   }
@@ -128,7 +127,7 @@ class _Node implements _Item {
   final Map<String, String> properties;
 
   _Node(this.name, Map<String, String> properties)
-      : this.properties = properties ?? const {};
+      : properties = properties ?? const {};
 }
 
 class _Edge implements _Item {
@@ -137,7 +136,7 @@ class _Edge implements _Item {
   final Map<String, String> properties;
 
   _Edge(this.from, this.to, Map<String, String> properties)
-      : this.properties = properties ?? const {};
+      : properties = properties ?? const {};
 }
 
 class _Blank implements _Item {

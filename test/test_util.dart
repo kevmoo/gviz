@@ -5,7 +5,7 @@ import 'package:gviz/gviz.dart';
 import 'package:test/test.dart';
 
 void gExpect(Gviz gviz, String expected) {
-  var value = gviz.toString();
+  final value = gviz.toString();
   try {
     expect(value, expected);
   } catch (e) {

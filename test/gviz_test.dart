@@ -8,18 +8,18 @@ import 'test_util.dart';
 
 void main() {
   test('adding the same node twice should fail', () {
-    var graph = new Gviz()..addNode('solo');
+    final graph = Gviz()..addNode('solo');
 
     expect(() => graph.addNode('solo'), throwsArgumentError);
   });
 
   test('empty', () {
-    var graph = new Gviz();
+    final graph = Gviz();
     gExpect(graph, 'digraph the_graph {\n}\n');
   });
 
   test('one node, one edge', () {
-    var graph = new Gviz()
+    final graph = Gviz()
       ..addNode('solo')
       ..addEdge('solo', 'solo');
 
@@ -31,7 +31,7 @@ void main() {
   });
 
   test('blanks', () {
-    var graph = new Gviz()
+    final graph = Gviz()
       ..addNode('solo')
       ..addLine()
       ..addEdge('solo', 'solo');
@@ -45,12 +45,12 @@ void main() {
   });
 
   test('handle keywords, numbers, and characters', () {
-    var graph = new Gviz(
+    final graph = Gviz(
         name: 'lib_graph',
         nodeProperties: {'fontname': 'Source Code Pro'},
         edgeProperties: {'fontname': 'Helvetica', 'fontcolor': 'gray'});
 
-    var values = {
+    final values = {
       'edge': 'keyword',
       'node': 'keyword',
       '42': 'starts with number',

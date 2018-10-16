@@ -18,21 +18,21 @@ class EdgeImpl<T> implements Edge<T> {
   @override
   final T to;
 
-  final _flags = new Set<Flag>();
+  final _flags = Set<Flag>();
 
   @override
-  Set<Flag> get flags => new UnmodifiableSetView(_flags);
+  Set<Flag> get flags => UnmodifiableSetView(_flags);
 
   EdgeImpl(this.from, this.to);
 
   void addFlag(Flag flag) {
-    var added = _flags.add(flag);
+    final added = _flags.add(flag);
     assert(added, 'Should never add more than once.');
   }
 
   @override
   bool operator ==(Object other) =>
-      other is Edge && this.from == other.from && this.to == other.to;
+      other is Edge && from == other.from && to == other.to;
 
   @override
   int get hashCode => from.hashCode ^ to.hashCode * 37;
