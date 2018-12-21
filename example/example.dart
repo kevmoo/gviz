@@ -4,7 +4,9 @@
 import 'package:gviz/gviz.dart';
 
 void main() {
-  final g = Graph.fromEdges([
+  final graph = Gviz();
+
+  for (var item in [
     [1, 2],
     [2, 5],
     [5, 1],
@@ -19,32 +21,16 @@ void main() {
     [4, 8],
     [8, 4],
     [8, 7]
-  ]);
+  ]) {
+    final from = item[0].toString();
+    final to = item[1].toString();
 
-  g.flagConnectedComponents();
-
-  print(g.createGviz(graphStyle: GStyle()));
-}
-
-class GStyle extends GraphStyle {
-  @override
-  Map<String, String> styleForNode(Object node) {
-    final props = super.styleForNode(node);
-    if (node is int && node % 2 == 1) {
-      props['color'] = 'red';
+    if (item[0] % 2 == 1 && !graph.nodeExists(from)) {
+      graph.addNode(from, properties: {'color': 'red'});
     }
 
-    return props;
+    graph.addEdge(from, to);
   }
 
-  @override
-  Map<String, String> styleForEdge(Edge edge) {
-    final props = <String, String>{};
-
-    if (edge.flags.isNotEmpty) {
-      props['color'] = 'blue';
-    }
-
-    return props;
-  }
+  print(graph);
 }

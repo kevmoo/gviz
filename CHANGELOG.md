@@ -1,3 +1,9 @@
+## 0.3.0
+
+* **BREAKING** Removed all of the complex graph API – `Graph`, `Edge`, `Flag`, 
+  `GraphStyle`.
+* Added `Gviz.nodeExists` function.
+
 ## 0.2.0+1
 
 * Support Dart 2 stable.

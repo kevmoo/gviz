@@ -1,14 +1,13 @@
 name: gviz
-description: Utilities for creating GraphViz graphs.
-version: 0.2.1-dev
+description: >-
+  A simple utility for creating GraphViz directed graphs using an object
+  oriented API.
+version: 0.3.0-dev
 homepage: https://github.com/kevmoo/gviz
 author: Kevin Moore <github@j832.com>
 
 environment:
   sdk: '>=2.0.0 <3.0.0'
-
-dependencies:
-  collection: ^1.14.3
 
 dev_dependencies:
   test: ^1.3.0
