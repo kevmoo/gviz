@@ -62,8 +62,9 @@ void main() {
 
     var lastNode = values.keys.last;
     values.forEach((node, description) {
-      graph.addNode(node, properties: {'xlabel': description});
-      graph.addEdge(node, lastNode);
+      graph
+        ..addNode(node, properties: {'xlabel': description})
+        ..addEdge(node, lastNode);
       lastNode = node;
     });
 
