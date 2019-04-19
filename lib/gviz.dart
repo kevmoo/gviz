@@ -50,7 +50,10 @@ class Gviz {
     _items.add(_Edge(from, to, properties));
   }
 
-  void addLine() {
+  /// Adds a blank line to the output contents.
+  ///
+  /// Not to be confused with [addEdge] – does not affect the rendered graph.
+  void addBlankLine() {
     _items.add(const _Blank());
   }
 

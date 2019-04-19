@@ -33,7 +33,7 @@ void main() {
   test('blanks', () {
     final graph = Gviz()
       ..addNode('solo')
-      ..addLine()
+      ..addBlankLine()
       ..addEdge('solo', 'solo');
 
     gExpect(graph, '''digraph the_graph {
