@@ -1,17 +1,6 @@
 import 'item.dart';
 
 class Gviz {
-  static const _keywords = [
-    'node',
-    'edge',
-    'graph',
-    'digraph',
-    'subgraph',
-    'strict'
-  ];
-
-  static final _validName = RegExp(r'^[a-zA-Z_][a-zA-Z_\d]*$');
-
   final String _name;
   final Map<String, String> _nodeProperties;
   final Map<String, String> _edgeProperties;
@@ -57,15 +46,6 @@ class Gviz {
   }
 
   void write(StringSink sink) {
-    String _escape(String input) {
-      if (_validName.hasMatch(input) &&
-          !_keywords.contains(input.toLowerCase())) {
-        return input;
-      }
-
-      return '"${input.replaceAll('"', '\\"')}"';
-    }
-
     void _writeProps(Map<String, String> properties) {
       if (properties.isNotEmpty) {
         final props = properties.keys
@@ -125,3 +105,15 @@ class Gviz {
     return buffer.toString();
   }
 }
+
+String _escape(String input) {
+  if (_validName.hasMatch(input) && !_keywords.contains(input.toLowerCase())) {
+    return input;
+  }
+
+  return '"${input.replaceAll('"', '\\"')}"';
+}
+
+const _keywords = ['node', 'edge', 'graph', 'digraph', 'subgraph', 'strict'];
+
+final _validName = RegExp(r'^[a-zA-Z_][a-zA-Z_\d]*$');
