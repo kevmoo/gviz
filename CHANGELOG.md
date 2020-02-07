@@ -1,6 +1,7 @@
 ## 0.3.1
 
 * Add simple `Edge` and `Node` classes and corresponding accessors to `Gviz`.
+* Bump min Dart SDK to `2.2.0`.
 
 ## 0.3.0
 
