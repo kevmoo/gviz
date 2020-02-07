@@ -1,3 +1,7 @@
+## 0.3.1
+
+* Add simple `Edge` and `Node` classes and corresponding accessors to `Gviz`.
+
 ## 0.3.0
 
 * **BREAKING** Removed all of the complex graph API – `Graph`, `Edge`, `Flag`, 

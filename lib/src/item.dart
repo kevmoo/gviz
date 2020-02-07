@@ -16,7 +16,3 @@ class Edge implements GvizItem {
   Edge(this.from, this.to, Map<String, String> properties)
       : properties = properties ?? const {};
 }
-
-class Blank implements GvizItem {
-  const Blank();
-}

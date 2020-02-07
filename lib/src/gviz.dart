@@ -8,6 +8,10 @@ class Gviz {
 
   final _items = <GvizItem>[];
 
+  Iterable<Node> get nodes => _items.whereType<Node>();
+
+  Iterable<Edge> get edges => _items.whereType<Edge>();
+
   Gviz(
       {String name,
       Map<String, String> nodeProperties,
@@ -42,7 +46,7 @@ class Gviz {
   ///
   /// Not to be confused with [addEdge] – does not affect the rendered graph.
   void addBlankLine() {
-    _items.add(const Blank());
+    _items.add(const _Blank());
   }
 
   void write(StringSink sink) {
@@ -89,7 +93,7 @@ class Gviz {
         _writeEdge(item);
       } else if (item is Node) {
         _writeNode(item);
-      } else if (item is Blank) {
+      } else if (item is _Blank) {
         sink.writeln();
       } else {
         throw StateError('Unsupported - ${item.runtimeType} - $item');
@@ -117,3 +121,7 @@ String _escape(String input) {
 const _keywords = ['node', 'edge', 'graph', 'digraph', 'subgraph', 'strict'];
 
 final _validName = RegExp(r'^[a-zA-Z_][a-zA-Z_\d]*$');
+
+class _Blank implements GvizItem {
+  const _Blank();
+}
