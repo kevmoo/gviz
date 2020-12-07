@@ -1,7 +1,8 @@
 language: dart
 
 dart:
-- 2.2.0
+# This won't build on the stable release till it supports nnbd, but 2.12 isn't release yet
+#- 2.12
 - dev
 
 dart_task:
