@@ -7,7 +7,7 @@ homepage: https://github.com/kevmoo/gviz
 author: Kevin Moore <github@j832.com>
 
 environment:
-  sdk: '>=2.0.0 <3.0.0'
+  sdk: '>=2.12.0-0 <3.0.0'
 
 dev_dependencies:
   pedantic: ^1.10.0-nullsafety.3
