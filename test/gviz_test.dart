@@ -21,7 +21,7 @@ void main() {
   test('one node, one edge', () {
     final graph = Gviz()
       ..addNode('solo')
-      ..addEdge('solo', 'solo');
+      ..addEdge(from: 'solo', to: 'solo');
 
     gExpect(graph, '''digraph the_graph {
   solo;
@@ -34,7 +34,7 @@ void main() {
     final graph = Gviz()
       ..addNode('solo')
       ..addBlankLine()
-      ..addEdge('solo', 'solo');
+      ..addEdge(from: 'solo', to: 'solo');
 
     gExpect(graph, '''digraph the_graph {
   solo;
@@ -64,7 +64,7 @@ void main() {
     values.forEach((node, description) {
       graph
         ..addNode(node, properties: {'xlabel': description})
-        ..addEdge(node, lastNode);
+        ..addEdge(from: node, to: lastNode);
       lastNode = node;
     });
 

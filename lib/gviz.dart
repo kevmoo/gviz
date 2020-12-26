@@ -20,12 +20,12 @@ class Gviz {
 
   final _items = <_Item>[];
 
-  Gviz(
-      {String name,
-      Map<String, String> nodeProperties,
-      Map<String, String> edgeProperties,
-      Map<String, String> graphProperties})
-      : _name = name ?? 'the_graph',
+  Gviz({
+    String? name,
+    Map<String, String>? nodeProperties,
+    Map<String, String>? edgeProperties,
+    Map<String, String>? graphProperties,
+  })  : _name = name ?? 'the_graph',
         _edgeProperties = edgeProperties ?? const {},
         _nodeProperties = nodeProperties ?? const {},
         _graphProperties = graphProperties ?? const {} {
@@ -38,7 +38,7 @@ class Gviz {
   bool nodeExists(String nodeName) =>
       _items.whereType<_Node>().any((item) => item.name == nodeName);
 
-  void addNode(String name, {Map<String, String> properties}) {
+  void addNode(String name, {Map<String, String>? properties}) {
     if (nodeExists(name)) {
       throw ArgumentError.value(
           name, 'name', 'Cannot have more than one node with name `$name`.');
@@ -46,7 +46,11 @@ class Gviz {
     _items.add(_Node(name, properties));
   }
 
-  void addEdge(String from, String to, {Map<String, String> properties}) {
+  void addEdge({
+    required String from,
+    required String to,
+    Map<String, String>? properties,
+  }) {
     _items.add(_Edge(from, to, properties));
   }
 
@@ -63,14 +67,13 @@ class Gviz {
           !_keywords.contains(input.toLowerCase())) {
         return input;
       }
-
       return '"${input.replaceAll('"', '\\"')}"';
     }
 
     void _writeProps(Map<String, String> properties) {
       if (properties.isNotEmpty) {
         final props = properties.keys
-            .map((key) => '$key=${_escape(properties[key])}')
+            .map((key) => '$key=${_escape(properties[key]!)}')
             .toList(growable: false)
             .join(', ');
         sink.write(' [$props]');
@@ -105,7 +108,7 @@ class Gviz {
       sink.writeln(';');
     }
 
-    for (var item in _items) {
+    for (final item in _items) {
       if (item is _Edge) {
         _writeEdge(item);
       } else if (item is _Node) {
@@ -133,7 +136,7 @@ class _Node implements _Item {
   final String name;
   final Map<String, String> properties;
 
-  _Node(this.name, Map<String, String> properties)
+  _Node(this.name, Map<String, String>? properties)
       : properties = properties ?? const {};
 }
 
@@ -142,7 +145,7 @@ class _Edge implements _Item {
   final String to;
   final Map<String, String> properties;
 
-  _Edge(this.from, this.to, Map<String, String> properties)
+  _Edge(this.from, this.to, Map<String, String>? properties)
       : properties = properties ?? const {};
 }
 

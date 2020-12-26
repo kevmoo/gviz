@@ -1,3 +1,7 @@
+## 0.4.0-nullsafety.0
+
+* **BREAKING** Null safety migration
+
 ## 0.3.0
 
 * **BREAKING** Removed all of the complex graph API – `Graph`, `Edge`, `Flag`, 

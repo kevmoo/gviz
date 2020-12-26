@@ -2,5 +2,5 @@
 [![Build Status](https://travis-ci.org/kevmoo/gviz.svg?branch=master)](https://travis-ci.org/kevmoo/gviz)
 
 A simple Dart package for writing
-[GraphViz](http://www.graphviz.org/)
-[dot files](http://www.graphviz.org/doc/info/lang.html).
+[GraphViz](https://www.graphviz.org/)
+[dot files](https://www.graphviz.org/doc/info/lang.html).

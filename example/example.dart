@@ -6,7 +6,7 @@ import 'package:gviz/gviz.dart';
 void main() {
   final graph = Gviz();
 
-  for (var item in [
+  for (final item in [
     [1, 2],
     [2, 5],
     [5, 1],
@@ -29,7 +29,7 @@ void main() {
       graph.addNode(from, properties: {'color': 'red'});
     }
 
-    graph.addEdge(from, to);
+    graph.addEdge(from: from, to: to);
   }
 
   print(graph);
