@@ -17,14 +17,18 @@ class Gviz {
   static final _validNumeralID = RegExp(r'^-?(\.\d+|\d+(.\d*)?)$');
 
   final String _name;
+  late final bool _isDirected;
   final Map<String, String> _nodeProperties;
   final Map<String, String> _edgeProperties;
   final Map<String, String> _graphProperties;
 
   final _items = <_Item>[];
 
+  late final String _edgeConnector;
+
   Gviz({
     String? name,
+    bool isDirected = true,
     Map<String, String>? nodeProperties,
     Map<String, String>? edgeProperties,
     Map<String, String>? graphProperties,
@@ -35,9 +39,28 @@ class Gviz {
     if (!_isValidID(_name)) {
       throw ArgumentError.value(name, 'name', '`name` must be a simple name.');
     }
+    _isDirected = isDirected;
+    _edgeConnector = _isDirected ? '->' : '--';
   }
 
   static bool _isValidID(String input) {
+    if (_validStringID.hasMatch(input) &&
+        !_keywords.contains(input.toLowerCase())) {
+      return true;
+    }
+
+    if (_validNumeralID.hasMatch(input)) {
+      return true;
+    }
+
+    if (input.startsWith('<') && input.endsWith('>')) {
+      return true;
+    }
+
+    return input.length > 3 && input.startsWith('"') && input.endsWith('"');
+  }
+
+  static bool isValidID(String input) {
     if (_validStringID.hasMatch(input) &&
         !_keywords.contains(input.toLowerCase())) {
       return true;
@@ -108,7 +131,11 @@ class Gviz {
       }
     }
 
-    sink.writeln('digraph $_name {');
+    if (_isDirected) {
+      sink.writeln('digraph $_name {');
+    } else {
+      sink.writeln('graph $_name {');
+    }
     writeGlobalProperties('graph', _graphProperties);
     writeGlobalProperties('node', _nodeProperties);
     writeGlobalProperties('edge', _edgeProperties);
@@ -122,7 +149,7 @@ class Gviz {
 
     void writeEdge(_Edge edge) {
       final entry = escape(edge.from);
-      sink.write('  $entry -> ${escape(edge.to)}');
+      sink.write('  $entry $_edgeConnector ${escape(edge.to)}');
       writeProps(edge.properties);
       sink.writeln(';');
     }
