@@ -14,14 +14,18 @@ class Gviz {
   static final _validName = RegExp(r'^[a-zA-Z_][a-zA-Z_\d]*$');
 
   final String _name;
+  late final bool _isDirected;
   final Map<String, String> _nodeProperties;
   final Map<String, String> _edgeProperties;
   final Map<String, String> _graphProperties;
 
   final _items = <_Item>[];
 
+  late final String _edgeConnector;
+
   Gviz(
       {String? name,
+      bool isDirected = true,
       Map<String, String>? nodeProperties,
       Map<String, String>? edgeProperties,
       Map<String, String>? graphProperties})
@@ -32,6 +36,8 @@ class Gviz {
     if (!_validName.hasMatch(_name)) {
       throw ArgumentError.value(name, 'name', '`name` must be a simple name.');
     }
+    _isDirected = isDirected;
+    _edgeConnector = _isDirected ? '->' : '--';
   }
 
   /// Returns `true` if [addNode] has been called with [nodeName].
@@ -86,7 +92,11 @@ class Gviz {
       }
     }
 
-    sink.writeln('digraph $_name {');
+    if (_isDirected) {
+      sink.writeln('digraph $_name {');
+    } else {
+      sink.writeln('graph $_name {');
+    }
     _writeGlobalProperties('graph', _graphProperties);
     _writeGlobalProperties('node', _nodeProperties);
     _writeGlobalProperties('edge', _edgeProperties);
@@ -100,7 +110,7 @@ class Gviz {
 
     void _writeEdge(_Edge edge) {
       final entry = _escape(edge.from);
-      sink.write('  $entry -> ${_escape(edge.to)}');
+      sink.write('  $entry $_edgeConnector ${_escape(edge.to)}');
       _writeProps(edge.properties);
       sink.writeln(';');
     }
