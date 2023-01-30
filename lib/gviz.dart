@@ -58,7 +58,7 @@ class Gviz {
   }
 
   void write(StringSink sink) {
-    String _escape(String input) {
+    String escape(String input) {
       if (_validName.hasMatch(input) &&
           !_keywords.contains(input.toLowerCase())) {
         return input;
@@ -67,49 +67,49 @@ class Gviz {
       return '"${input.replaceAll('"', '\\"')}"';
     }
 
-    void _writeProps(Map<String, String> properties) {
+    void writeProps(Map<String, String> properties) {
       if (properties.isNotEmpty) {
         final props = properties.keys
-            .map((key) => '$key=${_escape(properties[key]!)}')
+            .map((key) => '$key=${escape(properties[key]!)}')
             .toList(growable: false)
             .join(', ');
         sink.write(' [$props]');
       }
     }
 
-    void _writeGlobalProperties(String name, Map<String, String> properties) {
+    void writeGlobalProperties(String name, Map<String, String> properties) {
       assert(_keywords.contains(name));
       if (properties.isNotEmpty) {
         sink.write('  $name');
-        _writeProps(properties);
+        writeProps(properties);
         sink.writeln(';');
       }
     }
 
     sink.writeln('digraph $_name {');
-    _writeGlobalProperties('graph', _graphProperties);
-    _writeGlobalProperties('node', _nodeProperties);
-    _writeGlobalProperties('edge', _edgeProperties);
+    writeGlobalProperties('graph', _graphProperties);
+    writeGlobalProperties('node', _nodeProperties);
+    writeGlobalProperties('edge', _edgeProperties);
 
-    void _writeNode(_Node node) {
-      final entry = _escape(node.name);
+    void writeNode(_Node node) {
+      final entry = escape(node.name);
       sink.write('  $entry');
-      _writeProps(node.properties);
+      writeProps(node.properties);
       sink.writeln(';');
     }
 
-    void _writeEdge(_Edge edge) {
-      final entry = _escape(edge.from);
-      sink.write('  $entry -> ${_escape(edge.to)}');
-      _writeProps(edge.properties);
+    void writeEdge(_Edge edge) {
+      final entry = escape(edge.from);
+      sink.write('  $entry -> ${escape(edge.to)}');
+      writeProps(edge.properties);
       sink.writeln(';');
     }
 
     for (var item in _items) {
       if (item is _Edge) {
-        _writeEdge(item);
+        writeEdge(item);
       } else if (item is _Node) {
-        _writeNode(item);
+        writeNode(item);
       } else if (item is _Blank) {
         sink.writeln();
       } else {

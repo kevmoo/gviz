@@ -1,10 +1,14 @@
+## 0.4.1-dev
+
+- Require Dart 2.19
+
 ## 0.4.0
 
 * Migrate to null safety.
 
 ## 0.3.0
 
-* **BREAKING** Removed all of the complex graph API – `Graph`, `Edge`, `Flag`, 
+* **BREAKING** Removed all the complex graph API – `Graph`, `Edge`, `Flag`, 
   `GraphStyle`.
 * Added `Gviz.nodeExists` function.
 
