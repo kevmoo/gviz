@@ -29,6 +29,17 @@ void main() {
 }
 ''');
   });
+  test('one node, one edge, undirected', () {
+    final graph = Gviz(isDirected: false)
+      ..addNode('solo')
+      ..addEdge('solo', 'solo');
+
+    gExpect(graph, '''graph the_graph {
+  solo;
+  solo -- solo;
+}
+''');
+  });
 
   test('blanks', () {
     final graph = Gviz()
