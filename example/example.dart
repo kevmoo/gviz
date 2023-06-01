@@ -25,7 +25,7 @@ void main() {
     final from = item[0].toString();
     final to = item[1].toString();
 
-    if (item[0] % 2 == 1 && !graph.nodeExists(from)) {
+    if (item[0].isOdd && !graph.nodeExists(from)) {
       graph.addNode(from, properties: {'color': 'red'});
     }
 
