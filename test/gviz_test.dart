@@ -55,6 +55,7 @@ void main() {
       'node': 'keyword',
       '42': 'starts with number',
       '_5fine': 'no special characters',
+      '<xml>': 'html string',
       '"quotes"': 'contains double quotes',
       "'quotes'": 'contains single quotes',
       'cool\nbeans': 'contains a newline'
@@ -80,8 +81,10 @@ beans";
   42 -> "node";
   _5fine [xlabel="no special characters"];
   _5fine -> 42;
+  <xml> [xlabel="html string"];
+  <xml> -> _5fine;
   "quotes" [xlabel="contains double quotes"];
-  "quotes" -> _5fine;
+  "quotes" -> <xml>;
   "'quotes'" [xlabel="contains single quotes"];
   "'quotes'" -> "quotes";
   "cool
