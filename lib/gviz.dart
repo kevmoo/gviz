@@ -11,7 +11,12 @@ class Gviz {
     'strict'
   ];
 
-  static final _validName = RegExp(r'^[a-zA-Z_][a-zA-Z_\d]*$');
+  static final _validStringID = RegExp(
+    r'^[a-zA-Z\200-\377_][a-zA-Z\200-\377_\d]*$',
+  );
+  static final _validNumeralID = RegExp(
+    r'^-?(\.\d+|\d+(.\d*)?)$',
+  );
 
   final String _name;
   final Map<String, String> _nodeProperties;
@@ -29,9 +34,26 @@ class Gviz {
         _edgeProperties = edgeProperties ?? const {},
         _nodeProperties = nodeProperties ?? const {},
         _graphProperties = graphProperties ?? const {} {
-    if (!_validName.hasMatch(_name)) {
+    if (!_isValidID(_name)) {
       throw ArgumentError.value(name, 'name', '`name` must be a simple name.');
     }
+  }
+
+  bool _isValidID(String input) {
+    if (_validStringID.hasMatch(input) &&
+        !_keywords.contains(input.toLowerCase())) {
+      return true;
+    }
+
+    if (_validNumeralID.hasMatch(input)) {
+      return true;
+    }
+
+    if (input.startsWith('<') && input.endsWith('>')) {
+      return true;
+    }
+
+    return input.length > 3 && input.startsWith('"') && input.endsWith('"');
   }
 
   /// Returns `true` if [addNode] has been called with [nodeName].
@@ -59,8 +81,7 @@ class Gviz {
 
   void write(StringSink sink) {
     String escape(String input) {
-      if (_validName.hasMatch(input) &&
-          !_keywords.contains(input.toLowerCase())) {
+      if (_isValidID(input)) {
         return input;
       }
 
