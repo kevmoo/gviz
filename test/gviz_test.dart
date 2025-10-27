@@ -46,9 +46,10 @@ void main() {
 
   test('handle keywords, numbers, and characters', () {
     final graph = Gviz(
-        name: 'lib_graph',
-        nodeProperties: {'fontname': 'Source Code Pro'},
-        edgeProperties: {'fontname': 'Helvetica', 'fontcolor': 'gray'});
+      name: 'lib_graph',
+      nodeProperties: {'fontname': 'Source Code Pro'},
+      edgeProperties: {'fontname': 'Helvetica', 'fontcolor': 'gray'},
+    );
 
     final values = {
       'edge': 'keyword',
@@ -57,7 +58,7 @@ void main() {
       '_5fine': 'no special characters',
       '"quotes"': 'contains double quotes',
       "'quotes'": 'contains single quotes',
-      'cool\nbeans': 'contains a newline'
+      'cool\nbeans': 'contains a newline',
     };
 
     var lastNode = values.keys.last;

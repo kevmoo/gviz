@@ -8,7 +8,7 @@ class Gviz {
     'graph',
     'digraph',
     'subgraph',
-    'strict'
+    'strict',
   ];
 
   static final _validName = RegExp(r'^[a-zA-Z_][a-zA-Z_\d]*$');
@@ -20,15 +20,15 @@ class Gviz {
 
   final _items = <_Item>[];
 
-  Gviz(
-      {String? name,
-      Map<String, String>? nodeProperties,
-      Map<String, String>? edgeProperties,
-      Map<String, String>? graphProperties})
-      : _name = name ?? 'the_graph',
-        _edgeProperties = edgeProperties ?? const {},
-        _nodeProperties = nodeProperties ?? const {},
-        _graphProperties = graphProperties ?? const {} {
+  Gviz({
+    String? name,
+    Map<String, String>? nodeProperties,
+    Map<String, String>? edgeProperties,
+    Map<String, String>? graphProperties,
+  }) : _name = name ?? 'the_graph',
+       _edgeProperties = edgeProperties ?? const {},
+       _nodeProperties = nodeProperties ?? const {},
+       _graphProperties = graphProperties ?? const {} {
     if (!_validName.hasMatch(_name)) {
       throw ArgumentError.value(name, 'name', '`name` must be a simple name.');
     }
@@ -41,7 +41,10 @@ class Gviz {
   void addNode(String name, {Map<String, String>? properties}) {
     if (nodeExists(name)) {
       throw ArgumentError.value(
-          name, 'name', 'Cannot have more than one node with name `$name`.');
+        name,
+        'name',
+        'Cannot have more than one node with name `$name`.',
+      );
     }
     _items.add(_Node(name, properties));
   }
@@ -134,7 +137,7 @@ class _Node implements _Item {
   final Map<String, String> properties;
 
   _Node(this.name, Map<String, String>? properties)
-      : properties = properties ?? const {};
+    : properties = properties ?? const {};
 }
 
 class _Edge implements _Item {
@@ -143,7 +146,7 @@ class _Edge implements _Item {
   final Map<String, String> properties;
 
   _Edge(this.from, this.to, Map<String, String>? properties)
-      : properties = properties ?? const {};
+    : properties = properties ?? const {};
 }
 
 class _Blank implements _Item {
