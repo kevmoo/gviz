@@ -6,7 +6,7 @@ version: 0.4.1-wip
 repository: https://github.com/kevmoo/gviz
 
 environment:
-  sdk: ^3.4.0
+  sdk: ^3.9.0
 
 dev_dependencies:
   dart_flutter_team_lints: ^3.0.0

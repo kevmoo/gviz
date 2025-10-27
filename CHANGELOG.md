@@ -1,6 +1,6 @@
 ## 0.4.1-wip
 
-- Require Dart 3.4
+- Require Dart 3.9
 
 ## 0.4.0
 
