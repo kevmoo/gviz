@@ -2,7 +2,7 @@ name: gviz
 description: >-
   A simple utility for creating GraphViz directed graphs using an object
   oriented API.
-version: 0.4.1-wip
+version: 0.4.1
 repository: https://github.com/kevmoo/gviz
 
 environment:
@@ -10,4 +10,4 @@ environment:
 
 dev_dependencies:
   dart_flutter_team_lints: ^3.0.0
-  test: ^1.16.0
+  test: ^1.16.6

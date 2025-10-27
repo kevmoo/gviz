@@ -1,5 +1,6 @@
-## 0.4.1-wip
+## 0.4.1
 
+- Expand valid names. [#40](https://github.com/kevmoo/gviz/pull/40/)
 - Require Dart 3.9
 
 ## 0.4.0
