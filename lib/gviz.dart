@@ -2,14 +2,14 @@
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
 class Gviz {
-  static const _keywords = [
-    'node',
+  static const _keywords = {
+    'digraph',
     'edge',
     'graph',
-    'digraph',
-    'subgraph',
+    'node',
     'strict',
-  ];
+    'subgraph',
+  };
 
   static final _validStringID = RegExp(
     r'^[a-zA-Z\200-\377_][a-zA-Z\200-\377_\d]*$',
@@ -37,7 +37,7 @@ class Gviz {
     }
   }
 
-  bool _isValidID(String input) {
+  static bool _isValidID(String input) {
     if (_validStringID.hasMatch(input) &&
         !_keywords.contains(input.toLowerCase())) {
       return true;
