@@ -2,7 +2,7 @@ name: gviz
 description: >-
   A simple utility for creating Graphviz directed graphs using an object
   oriented API.
-version: 0.4.1
+version: 0.4.2
 repository: https://github.com/kevmoo/gviz
 
 environment:

@@ -60,23 +60,6 @@ class Gviz {
     return input.length > 3 && input.startsWith('"') && input.endsWith('"');
   }
 
-  static bool isValidID(String input) {
-    if (_validStringID.hasMatch(input) &&
-        !_keywords.contains(input.toLowerCase())) {
-      return true;
-    }
-
-    if (_validNumeralID.hasMatch(input)) {
-      return true;
-    }
-
-    if (input.startsWith('<') && input.endsWith('>')) {
-      return true;
-    }
-
-    return input.length > 3 && input.startsWith('"') && input.endsWith('"');
-  }
-
   /// Returns `true` if [addNode] has been called with [nodeName].
   bool nodeExists(String nodeName) =>
       _items.whereType<_Node>().any((item) => item.name == nodeName);
