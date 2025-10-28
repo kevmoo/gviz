@@ -17,14 +17,14 @@ class Gviz {
   static final _validNumeralID = RegExp(r'^-?(\.\d+|\d+(.\d*)?)$');
 
   final String _name;
-  late final bool _isDirected;
   final Map<String, String> _nodeProperties;
   final Map<String, String> _edgeProperties;
   final Map<String, String> _graphProperties;
 
   final _items = <_Item>[];
 
-  late final String _edgeConnector;
+  final bool _isDirected;
+  final String? _edgeConnector;
 
   Gviz({
     String? name,
@@ -35,12 +35,12 @@ class Gviz {
   }) : _name = name ?? 'the_graph',
        _edgeProperties = edgeProperties ?? const {},
        _nodeProperties = nodeProperties ?? const {},
-       _graphProperties = graphProperties ?? const {} {
+       _graphProperties = graphProperties ?? const {},
+       _isDirected = isDirected,
+       _edgeConnector = isDirected ? '->' : '--' {
     if (!_isValidID(_name)) {
       throw ArgumentError.value(name, 'name', '`name` must be a simple name.');
     }
-    _isDirected = isDirected;
-    _edgeConnector = _isDirected ? '->' : '--';
   }
 
   static bool _isValidID(String input) {
