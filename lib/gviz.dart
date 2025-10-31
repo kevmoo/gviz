@@ -23,15 +23,21 @@ class Gviz {
 
   final _items = <_Item>[];
 
+  final bool _isDirected;
+  final String? _edgeConnector;
+
   Gviz({
     String? name,
+    bool isDirected = true,
     Map<String, String>? nodeProperties,
     Map<String, String>? edgeProperties,
     Map<String, String>? graphProperties,
   }) : _name = name ?? 'the_graph',
        _edgeProperties = edgeProperties ?? const {},
        _nodeProperties = nodeProperties ?? const {},
-       _graphProperties = graphProperties ?? const {} {
+       _graphProperties = graphProperties ?? const {},
+       _isDirected = isDirected,
+       _edgeConnector = isDirected ? '->' : '--' {
     if (!_isValidID(_name)) {
       throw ArgumentError.value(name, 'name', '`name` must be a simple name.');
     }
@@ -108,7 +114,11 @@ class Gviz {
       }
     }
 
-    sink.writeln('digraph $_name {');
+    if (_isDirected) {
+      sink.writeln('digraph $_name {');
+    } else {
+      sink.writeln('graph $_name {');
+    }
     writeGlobalProperties('graph', _graphProperties);
     writeGlobalProperties('node', _nodeProperties);
     writeGlobalProperties('edge', _edgeProperties);
@@ -122,7 +132,7 @@ class Gviz {
 
     void writeEdge(_Edge edge) {
       final entry = escape(edge.from);
-      sink.write('  $entry -> ${escape(edge.to)}');
+      sink.write('  $entry $_edgeConnector ${escape(edge.to)}');
       writeProps(edge.properties);
       sink.writeln(';');
     }

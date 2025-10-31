@@ -1,7 +1,11 @@
+## 0.4.2
+
+* Allow undirected graphs via `Gviz(isDirected:false)`
+
 ## 0.4.1
 
-- Expand valid names. [#40](https://github.com/kevmoo/gviz/pull/40/)
-- Require Dart 3.9
+* Expand valid names. [#40](https://github.com/kevmoo/gviz/pull/40/)
+* Require Dart 3.9
 
 ## 0.4.0
 
